@@ -1,24 +1,31 @@
 MODULE main
 VAR
-  a : {table0, table2, onb, onc};
-  b : {table2};
-  c : {table3};
-  d : {table5};
+  pos_a : {table0, table2, on_b, on_c};
+  pos_b : {table2};
+  pos_c : {table3};
+  pos_d : {table5};
 
--- estado inicial
+DEFINE
+  size_a := 1;
+  size_b := 1;
+  size_c := 2;
+  size_d := 2;
+
+  clear_a := !(pos_b = on_a | pos_c = on_a | pos_d = on_a);
+  clear_b := !(pos_a = on_b | pos_c = on_b | pos_d = on_b);
+  clear_c := !(pos_a = on_c | pos_b = on_c | pos_d = on_c);
+  clear_d := !(pos_a = on_d | pos_b = on_d | pos_c = on_d);
+
 INIT
-  a = table0 & b = table2 & c = table3 & d = table5;
+  pos_a = table0 & pos_b = table2 & pos_c = table3 & pos_d = table5;
 
--- transições (apenas alguns exemplos possíveis)
 TRANS
   -- mover a sobre b
-  next(a) = onb -> b = table2 & a = table0;
-  
+  (pos_a = table0 & clear_a & clear_b & size_a <= size_b) -> next(pos_a) = on_b;
   -- mover a sobre c
-  next(a) = onc -> c = table3 & a = table0;
+  (pos_a = table0 & clear_a & clear_c & size_a <= size_c) -> next(pos_a) = on_c;
 
--- meta: queremos a em cima de b OU em cima de c
 DEFINE
-  goal := (a = onb) | (a = onc);
+  goal := (pos_a = on_b) | (pos_a = on_c);
 
-CTLSPEC ! EF goal
+CTLSPEC EF goal
