@@ -1,5 +1,5 @@
 # Inteligencia_Artificial-CB02
-Luis Henrique de Carvalhor Ribeiro CB02
+Luis Henrique de Carvalho Ribeiro CB02
 luis.henrique@icomp.ufam.edu.br
 
 Kaio Cavalcante de Carvalho CB02
