@@ -1,0 +1,29 @@
+MODULE main
+VAR
+  a : {onb, tableX};
+  b : {ond, tableY};
+  c : {ona, tableZ};
+  d : {table0, onc};
+
+INIT
+  d = table0 & b = ond & a = onb & c = ona;
+
+TRANS
+  -- mover c para mesa
+  next(c) = tableZ -> c = ona;
+  
+  -- mover a para mesa
+  next(a) = tableX -> a = onb;
+  
+  -- mover b para mesa
+  next(b) = tableY -> b = ond;
+  
+  -- reconstruir torre
+  next(a) = onb -> b = tableY;
+  next(c) = ona -> a = onb;
+  next(d) = onc -> c = ona;
+
+DEFINE
+  goal := (b = tableY & a = onb & c = ona & d = onc);
+
+CTLSPEC ! EF goal
