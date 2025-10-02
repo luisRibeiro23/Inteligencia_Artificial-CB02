@@ -1,0 +1,24 @@
+MODULE main
+VAR
+  a : {table0, table2, onb, onc};
+  b : {table2};
+  c : {table3};
+  d : {table5};
+
+-- estado inicial
+INIT
+  a = table0 & b = table2 & c = table3 & d = table5;
+
+-- transições (apenas alguns exemplos possíveis)
+TRANS
+  -- mover a sobre b
+  next(a) = onb -> b = table2 & a = table0;
+  
+  -- mover a sobre c
+  next(a) = onc -> c = table3 & a = table0;
+
+-- meta: queremos a em cima de b OU em cima de c
+DEFINE
+  goal := (a = onb) | (a = onc);
+
+CTLSPEC ! EF goal
