@@ -1,0 +1,21 @@
+MODULE main
+VAR
+  a : {ona, table1};
+  b : {table0};
+  c : {ond, table2};
+  d : {table2};
+
+INIT
+  a = ona & b = table0 & c = ond & d = table2;
+
+TRANS
+  -- mover a para mesa
+  next(a) = table1 -> a = ona;
+  
+  -- mover c para mesa
+  next(c) = table2 -> c = ond;
+
+DEFINE
+  goal := (a = table1 & b = table0 & c = table2 & d = table2);
+
+CTLSPEC ! EF goal
