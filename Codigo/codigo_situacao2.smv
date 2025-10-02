@@ -1,21 +1,31 @@
 MODULE main
 VAR
-  a : {ona, table1};
-  b : {table0};
-  c : {ond, table2};
-  d : {table2};
+  pos_a : {on_b, table1};
+  pos_b : {table0};
+  pos_c : {on_d, table2};
+  pos_d : {table2};
+
+DEFINE
+  size_a := 1;
+  size_b := 1;
+  size_c := 2;
+  size_d := 2;
+
+  clear_a := !(pos_b = on_a | pos_c = on_a | pos_d = on_a);
+  clear_b := !(pos_a = on_b | pos_c = on_b | pos_d = on_b);
+  clear_c := !(pos_a = on_c | pos_b = on_c | pos_d = on_c);
+  clear_d := !(pos_a = on_d | pos_b = on_d | pos_c = on_d);
 
 INIT
-  a = ona & b = table0 & c = ond & d = table2;
+  pos_a = on_b & pos_b = table0 & pos_c = on_d & pos_d = table2;
 
 TRANS
   -- mover a para mesa
-  next(a) = table1 -> a = ona;
-  
+  (pos_a = on_b & clear_a) -> next(pos_a) = table1;
   -- mover c para mesa
-  next(c) = table2 -> c = ond;
+  (pos_c = on_d & clear_c) -> next(pos_c) = table2;
 
 DEFINE
-  goal := (a = table1 & b = table0 & c = table2 & d = table2);
+  goal := (pos_a = table1 & pos_b = table0 & pos_c = table2 & pos_d = table2);
 
-CTLSPEC ! EF goal
+CTLSPEC EF goal
