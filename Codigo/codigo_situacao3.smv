@@ -1,29 +1,36 @@
 MODULE main
 VAR
-  a : {onb, tableX};
-  b : {ond, tableY};
-  c : {ona, tableZ};
-  d : {table0, onc};
-
-INIT
-  d = table0 & b = ond & a = onb & c = ona;
-
-TRANS
-  -- mover c para mesa
-  next(c) = tableZ -> c = ona;
-  
-  -- mover a para mesa
-  next(a) = tableX -> a = onb;
-  
-  -- mover b para mesa
-  next(b) = tableY -> b = ond;
-  
-  -- reconstruir torre
-  next(a) = onb -> b = tableY;
-  next(c) = ona -> a = onb;
-  next(d) = onc -> c = ona;
+  pos_a : {on_b, table1};
+  pos_b : {on_d, table2};
+  pos_c : {on_a, table3};
+  pos_d : {table0, on_c};
 
 DEFINE
-  goal := (b = tableY & a = onb & c = ona & d = onc);
+  size_a := 1;
+  size_b := 1;
+  size_c := 2;
+  size_d := 2;
 
-CTLSPEC ! EF goal
+  clear_a := !(pos_b = on_a | pos_c = on_a | pos_d = on_a);
+  clear_b := !(pos_a = on_b | pos_c = on_b | pos_d = on_b);
+  clear_c := !(pos_a = on_c | pos_b = on_c | pos_d = on_c);
+  clear_d := !(pos_a = on_d | pos_b = on_d | pos_c = on_d);
+
+INIT
+  pos_d = table0 & pos_b = on_d & pos_a = on_b & pos_c = on_a;
+
+TRANS
+  -- desmontagem
+  (pos_c = on_a & clear_c) -> next(pos_c) = table3;
+  (pos_a = on_b & clear_a) -> next(pos_a) = table1;
+  (pos_b = on_d & clear_b) -> next(pos_b) = table2;
+
+  -- reconstrução
+  (pos_a = table1 & pos_b = table2 & clear_a & clear_b & size_a <= size_b) -> next(pos_a) = on_b;
+  (pos_c = table3 & pos_a = on_b & clear_c & clear_a & size_c <= size_a) -> next(pos_c) = on_a;
+  (pos_d = table0 & pos_c = on_a & clear_d & clear_c & size_d <= size_c) -> next(pos_d) = on_c;
+
+DEFINE
+  goal := (pos_b = table2 & pos_a = on_b & pos_c = on_a & pos_d = on_c);
+
+CTLSPEC EF goal
