@@ -27,7 +27,7 @@ TRANS
 
   -- reconstrução
   (pos_a = table1 & pos_b = table2 & clear_a & clear_b & size_a <= size_b) -> next(pos_a) = on_b;
-  (pos_c = table3 & pos_a = on_b & clear_c & clear_a & size_c <= size_a) -> next(pos_c) = on_a;
+  (pos_c = table3 & pos_a = on_b & clear_c & clear_a) -> next(pos_c) = on_a;
   (pos_d = table0 & pos_c = on_a & clear_d & clear_c & size_d <= size_c) -> next(pos_d) = on_c;
 
 DEFINE
