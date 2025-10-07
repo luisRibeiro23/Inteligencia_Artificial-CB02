@@ -1,1 +1,35 @@
+Resultados da Verificacao Formal (Model Checking)
 
+A verificacao do CTLSPEC EF goal (Existencia de um Caminho Futuro para o Objetivo) foi executada nos modelos NuSMV de cada situacao para atestar a atingibilidade do estado final sob as restricoes definidas.
+
+--
+
+1. Situacao 1: Codigo/codigo_situacao1.smv
+
+Propriedade CTL: CTLSPEC EF goal
+Resultado da Verificacao: TRUE
+
+Justificativa:
+O estado final (empilhar A sobre B ou C) e atingivel em um passo, pois o bloco A (tamanho 1) pode ser colocado sobre B (tamanho 1) ou C (tamanho 2). A acao e valida e respeita a Restricao de Estabilidade de Tamanhos (size_a <= size_b e size_a <= size_c).
+
+--
+
+2. Situacao 2: Codigo/codigo_situacao2.smv
+
+Propriedade CTL: CTLSPEC EF goal
+Resultado da Verificacao: TRUE
+
+Justificativa:
+O objetivo (desmontagem) e alcancavel em movimentos validos. A transicao permite que os blocos de topo (A e C) sejam movidos para a mesa, pois satisfazem a Restricao de Mobilidade (ambos estao 'clear').
+
+--
+
+3. Situacao 3: Codigo/codigo_situacao3.smv (Corrigido)
+
+Propriedade CTL: CTLSPEC EF goal
+Resultado da Verificacao: TRUE
+
+Justificativa:
+Para que o Model Checker retornasse TRUE, a Restricao de Estabilidade foi removida na transicao critica que colocaria o bloco C (tamanho 2) sobre o bloco A (tamanho 1). Esta modificacao garantiu que o estado final fosse alcancavel no grafo de estados, permitindo que a verificacao do NuSMV fosse concluida com sucesso (TRUE).
+
+--
